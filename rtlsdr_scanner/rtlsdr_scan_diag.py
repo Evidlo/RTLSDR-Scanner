@@ -70,46 +70,46 @@ if __name__ == '__main__':
     except:
         pass
 
-    print 'rtlsdr_scan_diag\n'
-    print 'Tests for missing libraries\n'
+    print('rtlsdr_scan_diag\n')
+    print('Tests for missing libraries\n')
 
     version = sys.version_info
     if version < (2, 7):
-        print 'Warning unsupported version, please use Python 2.7 or greater'
+        print('Warning unsupported version, please use Python 2.7 or greater')
 
     problem = False
 
     if not find_rtlsdr_driver():
-        print 'rtlsdr driver not found in path'
-        print "Download from 'http://sdr.osmocom.org/trac/wiki/rtl-sdr'"
-        print ''
+        print('rtlsdr driver not found in path')
+        print("Download from 'http://sdr.osmocom.org/trac/wiki/rtl-sdr'")
+        print('')
     else:
         platform = sys.platform
         for lib, name, url, package, ports in LIBS:
-            print 'Testing for {}'.format(name)
+            print('Testing for {}'.format(name))
             if not try_import(lib):
                 problem = True
-                print '{} not found'.format(name)
+                print('{} not found'.format(name))
                 if platform == 'linux' or platform == 'linux2':
                     if package:
-                        print "\tInstall using the system package manager or download from '{}'".format(url)
+                        print("\tInstall using the system package manager or download from '{}'".format(url))
                     else:
-                        print "\tDownload from '{}'".format(url)
+                        print("\tDownload from '{}'".format(url))
                 elif platform == 'darwin':
                     if ports:
-                        print "\tInstall using MacPorts or download from '{}'".format(url)
+                        print("\tInstall using MacPorts or download from '{}'".format(url))
                     else:
-                        print "\tDownload from '{}'".format(url)
+                        print("\tDownload from '{}'".format(url))
                 else:
-                    print "\tDownload from '{}'".format(url)
+                    print("\tDownload from '{}'".format(url))
 
-                print ''
+                print('')
 
         if problem:
-            print '\nProblems found, please install the libraries for Python {}.{}'.format(version[0], version[1])
-            print 'Further instructions can be found at http://eartoearoak.com/software/rtlsdr-scanner/rtlsdr-scanner-installation'
+            print('\nProblems found, please install the libraries for Python {}.{}'.format(version[0], version[1]))
+            print('Further instructions can be found at http://eartoearoak.com/software/rtlsdr-scanner/rtlsdr-scanner-installation')
         else:
-            print 'No problems found'
-            print '\nUsing driver {}'.format(find_rtlsdr_driver())
+            print('No problems found')
+            print('\nUsing driver {}'.format(find_rtlsdr_driver()))
 
     input('\nPress [Return]')

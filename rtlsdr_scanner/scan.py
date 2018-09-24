@@ -180,7 +180,7 @@ class ThreadProcess(threading.Thread):
                                             NFFT=self.nfft,
                                             Fs=SAMPLE_RATE / 1e6,
                                             window=function(self.nfft))
-        for freqPsd, pwr in itertools.izip(freqs, powers):
+        for freqPsd, pwr in zip(freqs, powers):
             xr = freqPsd + (self.freq / 1e6)
             xr = xr + (xr * self.cal / 1e6)
             spectrum[xr] = pwr * self.levelOff
@@ -234,5 +234,5 @@ def update_spectrum(notify, lock, start, stop, data, offset,
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

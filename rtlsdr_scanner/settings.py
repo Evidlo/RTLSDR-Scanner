@@ -23,7 +23,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import ConfigParser
+from six.moves import configparser as ConfigParser
 
 import wx
 
@@ -170,17 +170,17 @@ class Settings(object):
                     name = device.name
                 else:
                     name = "{}:{}".format(device.server, device.port)
-                self.cfg.SetPath("/DevicesRTL/" + format_device_rtl_name(name))
-                self.cfg.Write('serial', device.serial)
-                self.cfg.WriteBool('isDevice', device.isDevice)
-                self.cfg.Write('server', device.server)
-                self.cfg.WriteInt('port', device.port)
-                self.cfg.WriteFloat('gain', device.gain)
-                self.cfg.WriteFloat('lo', device.lo)
-                self.cfg.WriteFloat('calibration', device.calibration)
-                self.cfg.WriteFloat('offset', device.offset)
-                self.cfg.WriteInt('tuner', device.tuner)
-                self.cfg.WriteFloat('levelOff', device.levelOff)
+                self.cfg.SetPath(b'/DevicesRTL/' + format_device_rtl_name(name))
+                self.cfg.Write(b'serial', device.serial)
+                self.cfg.WriteBool(b'isDevice', device.isDevice)
+                self.cfg.Write(b'server', device.server)
+                self.cfg.WriteInt(b'port', device.port)
+                self.cfg.WriteFloat(b'gain', device.gain)
+                self.cfg.WriteFloat(b'lo', device.lo)
+                self.cfg.WriteFloat(b'calibration', device.calibration)
+                self.cfg.WriteFloat(b'offset', device.offset)
+                self.cfg.WriteInt(b'tuner', device.tuner)
+                self.cfg.WriteFloat(b'levelOff', device.levelOff)
 
     def __save_devices_gps(self):
         self.cfg.DeleteGroup('/DevicesGPS')
@@ -378,5 +378,5 @@ class Settings(object):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

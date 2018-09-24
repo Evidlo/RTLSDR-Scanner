@@ -147,13 +147,13 @@ def get_devices_rtl(currentDevices=None, statusBar=None):
 
 
 def format_device_rtl_name(name):
-    remove = ["/", "\\"]
+    remove = [b"/", b"\\"]
     for char in remove:
-        name = name.replace(char, " ")
+        name = name.replace(char, b" ")
 
     return name
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

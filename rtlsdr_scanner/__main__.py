@@ -36,7 +36,7 @@ try:
     import rtlsdr  # @UnusedImport
     import wx  # @UnusedImport
 except ImportError as error:
-    print 'Import error: {}'.format(error)
+    print('Import error: {}'.format(error))
     input('\nError importing libraries\nPress [Return] to exit')
     exit(1)
 
@@ -109,20 +109,20 @@ def __arguments():
         args.dirname, args.filename = os.path.split(args.file)
 
     if error is not None:
-        print "Error: {}".format(error)
+        print("Error: {}".format(error))
         parser.exit(1)
 
     return isGui, (args)
 
 
 if __name__ == '__main__':
-    print APP_NAME + "\n"
+    print(APP_NAME + "\n")
 
     isGui, args = __arguments()
     if isGui:
         app = RtlSdrScanner()
         app.SetClassName(APP_NAME)
-        wx.Locale().Init2()
+        wx.Locale().Init()
         frame = FrameMain(APP_NAME)
         if args.file is not None:
             frame.open(os.path.abspath(args.dirname), args.filename)
@@ -131,5 +131,5 @@ if __name__ == '__main__':
         try:
             Cli(args)
         except KeyboardInterrupt:
-            print '\nAborted'
+            print('\nAborted')
             exit(1)

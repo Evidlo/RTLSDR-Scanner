@@ -66,7 +66,7 @@ class Extent(object):
                 self.lMin = min(self.lMin, lMin)
                 if(lMax >= self.lMax):
                     self.lMax = lMax
-                    self.fPeak, self.lPeak = max(points, key=lambda(_f, l): l)
+                    self.fPeak, self.lPeak = max(points, key=lambda l: l[1])
                     self.tPeak = timeStamp
 
     def get_f(self):
@@ -216,7 +216,7 @@ def reduce_points(spectrum, limit):
     for timeStamp in spectrum:
         points = spectrum[timeStamp].items()
         reduced = OrderedDict()
-        for i in xrange(int(len(points) / ratio)):
+        for i in range(int(len(points) / ratio)):
             point = points[int(i * ratio):int((i + 1) * ratio)][0]
             reduced[point[0]] = point[1]
         newSpectrum[timeStamp] = reduced
@@ -225,16 +225,16 @@ def reduce_points(spectrum, limit):
 
 
 def split_spectrum(spectrum):
-    freqs = spectrum.keys()
-    powers = map(spectrum.get, freqs)
+    freqs = list(spectrum.keys())
+    powers = list(spectrum.values())
 
     return freqs, powers
 
 
 def split_spectrum_sort(spectrum):
-    freqs = spectrum.keys()
+    freqs = list(spectrum.keys())
     freqs.sort()
-    powers = map(spectrum.get, freqs)
+    powers = list(map(spectrum.get, freqs))
 
     return freqs, powers
 
@@ -255,7 +255,7 @@ def slice_spectrum(spectrum, start, end):
             return None
 
     sweepTemp = {}
-    for f, p in sweep.iteritems():
+    for f, p in sweep.items():
         if start <= f <= end:
             sweepTemp[f] = p
     return sorted(sweepTemp.items(), key=lambda t: t[0])
@@ -362,5 +362,5 @@ def get_peaks(spectrum, threshold):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

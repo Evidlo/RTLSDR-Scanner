@@ -23,7 +23,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import Queue
+from six.moves import queue as Queue
 import time
 
 import wx
@@ -124,5 +124,5 @@ def post_event(destination, status):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

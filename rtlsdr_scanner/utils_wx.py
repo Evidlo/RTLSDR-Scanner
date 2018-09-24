@@ -27,6 +27,7 @@ import os
 
 import wx
 from rtlsdr_scanner.misc import get_resource
+from matplotlib.backends.backend_wx import _load_bitmap
 
 
 class ValidatorCoord(wx.PyValidator):
@@ -74,7 +75,6 @@ def load_bitmap(name):
 
     return wx.Bitmap(filename, wx.BITMAP_TYPE_PNG)
 
-
 def load_icon(name):
     filename = get_resource(name + '.png')
 
@@ -88,5 +88,5 @@ def close_modeless():
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

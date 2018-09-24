@@ -42,7 +42,7 @@ class MenuMain(object):
         recent = wx.Menu()
         settings.fileHistory.UseMenu(recent)
         settings.fileHistory.AddFilesToMenu()
-        file.AppendMenu(wx.ID_ANY, "&Recent Files", recent)
+        file.Append(wx.ID_ANY, "&Recent Files", recent)
         file.AppendSeparator()
         self.save = file.Append(wx.ID_SAVE, "&Save As...",
                                 "Save plot_line")
@@ -249,5 +249,5 @@ class PopMenuMain(object):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

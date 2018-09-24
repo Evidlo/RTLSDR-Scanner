@@ -696,7 +696,7 @@ class PanelMeasure(wx.Panel):
         self.grid.SetColSize(7, 1)
         self.grid.SetColSize(11, 1)
         self.grid.SetColSize(15, 1)
-        self.grid.SetMargins(0, wx.SystemSettings_GetMetric(wx.SYS_HSCROLL_Y))
+        self.grid.SetMargins(0, wx.SystemSettings.GetMetric(wx.SYS_HSCROLL_Y))
 
         for x in range(self.grid.GetNumberRows()):
             self.grid.SetRowLabelValue(x, '')
@@ -760,17 +760,17 @@ class PanelMeasure(wx.Panel):
         dc.SetFont(font)
         widthMHz = dc.GetTextExtent('###.######')[0] * 1.2
         widthdB = dc.GetTextExtent('-##.##')[0] * 1.2
-        for _desc, (_row, col) in self.locsDesc.iteritems():
+        for _desc, (_row, col) in self.locsDesc.items():
             self.grid.AutoSizeColumn(col)
         for col in [1, 5, 14, 18]:
             self.grid.SetColSize(col, widthMHz)
-            for row in xrange(self.grid.GetNumberRows()):
+            for row in range(self.grid.GetNumberRows()):
                 self.grid.SetCellFont(row, col, font)
         for col in [6, 10]:
             self.grid.SetColSize(col, widthdB)
-            for row in xrange(self.grid.GetNumberRows()):
+            for row in range(self.grid.GetNumberRows()):
                 self.grid.SetCellFont(row, col, font)
-        for _desc, (_row, col) in self.locsCheck.iteritems():
+        for _desc, (_row, col) in self.locsCheck.items():
             self.grid.AutoSizeColumn(col)
 
         toolTips = {}
@@ -814,12 +814,12 @@ class PanelMeasure(wx.Panel):
         font = self.grid.GetCellFont(0, 0)
         font.SetWeight(wx.BOLD)
 
-        for desc, (row, col) in self.locsDesc.iteritems():
+        for desc, (row, col) in self.locsDesc.items():
             self.grid.SetCellValue(row, col, desc)
             self.grid.SetCellFont(row, col, font)
 
     def __set_check_editor(self):
-        for _desc, (row, col) in self.locsCheck.iteritems():
+        for _desc, (row, col) in self.locsCheck.items():
             self.grid.SetCellEditor(row, col, wxGrid.GridCellBoolEditor())
             self.grid.SetCellAlignment(row, col, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
             self.grid.SetCellRenderer(row, col, CheckBoxCellRenderer(self))
@@ -879,7 +879,7 @@ class PanelMeasure(wx.Panel):
                     check = '1'
                 self.grid.SetCellValue(row, col, check)
 
-                for control, (r, c) in self.locsCheck.iteritems():
+                for control, (r, c) in self.locsCheck.items():
                     if (r, c) == (row, col):
                         self.checked[control] = check
 
@@ -889,7 +889,7 @@ class PanelMeasure(wx.Panel):
                     col = self.selected[1]
                     self.grid.SetGridCursor(row, col)
                 self.update_measure()
-        elif (row, col) in self.locsMeasure.itervalues():
+        elif (row, col) in self.locsMeasure.values():
             self.selected = (row, col)
             self.grid.SetGridCursor(row, col)
         elif self.selected is None:
@@ -1076,5 +1076,5 @@ class PanelMeasure(wx.Panel):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

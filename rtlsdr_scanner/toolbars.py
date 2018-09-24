@@ -30,8 +30,9 @@ import time
 import matplotlib
 from matplotlib.backend_bases import NavigationToolbar2
 from matplotlib.backends.backend_wxagg import NavigationToolbar2WxAgg
+
 import wx
-from wx.animate import AnimationCtrl, Animation
+from wx.adv import AnimationCtrl, Animation
 
 from rtlsdr_scanner.constants import Display, PlotFunc
 from rtlsdr_scanner.dialogs_toolbars import DialogSmoothPrefs, DialogPeakThreshold
@@ -64,7 +65,7 @@ class Statusbar(wx.StatusBar):
                                     style=wx.GA_HORIZONTAL | wx.GA_SMOOTH)
         animation = Animation(get_resource('busy.gif'))
         busy = AnimationCtrl(self, anim=animation)
-        busy.SetToolTipString('Updating plot')
+        busy.SetToolTip('Updating plot')
         self.controls[4] = busy
 
         self.controls[3].Hide()
@@ -98,21 +99,21 @@ class Statusbar(wx.StatusBar):
     def set_general(self, text, level=Log.INFO):
         text = self.TEXT_GENERAL + text
         self.controls[0].SetLabel(text)
-        self.controls[0].SetToolTipString(self.__format_tooltip(text))
+        self.controls[0].SetToolTip(self.__format_tooltip(text))
         self.controls[0].Refresh()
         self.log.add(text, level)
 
     def set_info(self, text, level=Log.INFO):
         text = self.TEXT_INFO + text
         self.controls[1].SetLabel(text)
-        self.controls[1].SetToolTipString(self.__format_tooltip(text))
+        self.controls[1].SetToolTip(self.__format_tooltip(text))
         self.controls[1].Refresh()
         self.log.add(text, level)
 
     def set_gps(self, text, level=Log.INFO):
         text = self.TEXT_GPS + text
         self.controls[2].SetLabel(text)
-        self.controls[2].SetToolTipString(self.__format_tooltip(text))
+        self.controls[2].SetToolTip(self.__format_tooltip(text))
         self.controls[2].Refresh()
         self.log.add(text, level)
 
@@ -144,14 +145,14 @@ class Statusbar(wx.StatusBar):
             text = '{:.1f}%\n{}'.format(progress, delta)
 
         self.controls[3].SetValue(progress)
-        self.controls[3].SetToolTipString(self.__format_tooltip(text))
+        self.controls[3].SetToolTip(self.__format_tooltip(text))
 
     def show_progress(self):
         self.controls[3].Show()
 
     def hide_progress(self):
         self.controls[3].Hide()
-        self.controls[3].SetToolTipString('')
+        self.controls[3].SetToolTip('')
 
     def set_busy(self, busy):
         animCtrl = self.controls[4]
@@ -183,13 +184,13 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
         self.__add_spacer(False)
 
         liveId = wx.NewId()
-        self.AddCheckTool(liveId, load_bitmap('auto_refresh'),
+        self.AddCheckTool(liveId, "", load_bitmap('auto_refresh'),
                           shortHelp='Real time plotting\n(slow and buggy)')
         self.ToggleTool(liveId, settings.liveUpdate)
         wx.EVT_TOOL(self, liveId, self.__on_check_update)
 
         gridId = wx.NewId()
-        self.AddCheckTool(gridId, load_bitmap('grid'),
+        self.AddCheckTool(gridId, "", load_bitmap('grid'),
                           shortHelp='Toggle plot_line grid')
         self.ToggleTool(gridId, settings.grid)
         wx.EVT_TOOL(self, gridId, self.__on_check_grid)
@@ -246,47 +247,47 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
         self.clear_auto()
 
     def __on_check_auto_f(self, event):
-        self.settings.autoF = event.Checked()
+        self.settings.autoF = event.IsChecked()
         self.panel.redraw_plot()
 
     def __on_check_auto_l(self, event):
-        self.settings.autoL = event.Checked()
+        self.settings.autoL = event.IsChecked()
         self.panel.redraw_plot()
 
     def __on_check_auto_t(self, event):
-        self.settings.autoT = event.Checked()
+        self.settings.autoT = event.IsChecked()
         self.panel.redraw_plot()
 
     def __on_check_update(self, event):
-        self.settings.liveUpdate = event.Checked()
+        self.settings.liveUpdate = event.IsChecked()
 
     def __on_check_grid(self, event):
-        grid = event.Checked()
+        grid = event.IsChecked()
         self.settings.grid = grid
         self.panel.set_grid(grid)
 
     def __on_check_peak(self, event):
-        peak = event.Checked()
+        peak = event.IsChecked()
         self.settings.annotate = peak
         self.panel.redraw_plot()
 
     def __on_check_peaks(self, event):
-        peaks = event.Checked()
+        peaks = event.IsChecked()
         self.settings.peaks = peaks
         self.panel.redraw_plot()
 
     def __on_check_fade(self, event):
-        fade = event.Checked()
+        fade = event.IsChecked()
         self.settings.fadeScans = fade
         self.panel.redraw_plot()
 
     def __on_check_wire(self, event):
-        wire = event.Checked()
+        wire = event.IsChecked()
         self.settings.wireframe = wire
         self.panel.create_plot()
 
     def __on_check_avg(self, event):
-        check = event.Checked()
+        check = event.IsChecked()
         if check:
             self.settings.plotFunc = PlotFunc.AVG
         else:
@@ -295,7 +296,7 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
         self.panel.redraw_plot()
 
     def __on_check_min(self, event):
-        check = event.Checked()
+        check = event.IsChecked()
         if check:
             self.settings.plotFunc = PlotFunc.MIN
         else:
@@ -304,7 +305,7 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
         self.panel.redraw_plot()
 
     def __on_check_max(self, event):
-        check = event.Checked()
+        check = event.IsChecked()
         if check:
             self.settings.plotFunc = PlotFunc.MAX
         else:
@@ -313,7 +314,7 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
         self.panel.redraw_plot()
 
     def __on_check_var(self, event):
-        check = event.Checked()
+        check = event.IsChecked()
         if check:
             self.settings.plotFunc = PlotFunc.VAR
         else:
@@ -322,7 +323,7 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
         self.panel.redraw_plot()
 
     def __on_check_smooth(self, event):
-        check = event.Checked()
+        check = event.IsChecked()
         if check:
             self.settings.plotFunc = PlotFunc.SMOOTH
         else:
@@ -331,7 +332,7 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
         self.panel.redraw_plot()
 
     def __on_check_diff(self, event):
-        check = event.Checked()
+        check = event.IsChecked()
         if check:
             self.settings.plotFunc = PlotFunc.DIFF
         else:
@@ -340,7 +341,7 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
         self.panel.redraw_plot()
 
     def __on_check_delta(self, event):
-        check = event.Checked()
+        check = event.IsChecked()
         if check:
             self.settings.plotFunc = PlotFunc.DELTA
         else:
@@ -365,7 +366,7 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
         self.panel.redraw_plot()
 
     def __on_colour_use(self, event):
-        check = event.Checked()
+        check = event.IsChecked()
         self.settings.colourMapUse = check
         self.colourId.Enable(check)
         self.plot.set_colourmap_use(check)
@@ -374,7 +375,7 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
     def __add_check_tool(self, bitmap, toolTip, callback, setting=None, toolId=None):
         if toolId is None:
             toolId = wx.NewId()
-        self.AddCheckTool(toolId, load_bitmap(bitmap), shortHelp=toolTip)
+        self.AddCheckTool(toolId, "", load_bitmap(bitmap), shortHelp=toolTip)
         wx.EVT_TOOL(self, toolId, callback)
         if setting is not None:
             self.ToggleTool(toolId, setting)
@@ -382,7 +383,7 @@ class NavigationToolbar(NavigationToolbar2WxAgg):
 
     def __add_spacer(self, temp=True):
         sepId = wx.NewId()
-        self.AddCheckTool(sepId, load_bitmap('spacer'))
+        self.AddCheckTool(sepId, "", load_bitmap('spacer'))
         self.EnableTool(sepId, False)
         if temp:
             self.extraTools.append(sepId)
@@ -597,13 +598,13 @@ class NavigationToolbarCompare(NavigationToolbar2WxAgg):
         self.AddSeparator()
 
         gridId = wx.NewId()
-        self.AddCheckTool(gridId, load_bitmap('grid'),
+        self.AddCheckTool(gridId, "", load_bitmap('grid'),
                           shortHelp='Toggle grid')
         self.ToggleTool(gridId, True)
         wx.EVT_TOOL(self, gridId, self.__on_check_grid)
 
     def __on_check_grid(self, event):
-        grid = event.Checked()
+        grid = event.IsChecked()
         self.panel.set_grid(grid)
 
     def clear_auto(self):
@@ -611,5 +612,5 @@ class NavigationToolbarCompare(NavigationToolbar2WxAgg):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

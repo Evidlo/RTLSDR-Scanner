@@ -23,9 +23,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import Queue
+from six.moves import queue as Queue
 import copy
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 
 from wx import grid
 import wx
@@ -74,7 +74,7 @@ class DialogDevicesRTL(wx.Dialog):
         dc.SetFont(self.gridDev.GetLabelFont())
         maxHeight = 0
         for i in range(self.COLS - 1):
-            _w, h, _hl = dc.GetMultiLineTextExtent(self.gridDev.GetColLabelValue(i))
+            _w, h, _hl = dc.GetFullMultiLineTextExtent(self.gridDev.GetColLabelValue(i))
             if h > maxHeight:
                 maxHeight = h
         self.gridDev.SetColLabelSize(maxHeight * 1.25)
@@ -284,12 +284,12 @@ class DialogDevicesGPS(wx.Dialog):
         wx.Dialog.__init__(self, parent=parent, title="GPS")
 
         self.checkGps = wx.CheckBox(self, wx.ID_ANY, "Enable GPS")
-        self.checkGps.SetToolTipString('Record GPS locations in scans')
+        self.checkGps.SetToolTip('Record GPS locations in scans')
         self.checkGps.SetValue(settings.gps)
         self.Bind(wx.EVT_CHECKBOX, self.__on_check, self.checkGps)
 
         self.checkGpsRetry = wx.CheckBox(self, wx.ID_ANY, "Retry after disconnection")
-        self.checkGpsRetry.SetToolTipString('Retry GPS if disconnected')
+        self.checkGpsRetry.SetToolTip('Retry GPS if disconnected')
         self.checkGpsRetry.SetValue(settings.gpsRetry)
         self.checkGpsRetry.Enable(settings.gps)
 
@@ -714,5 +714,5 @@ class DialogGPSTest(wx.Dialog):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

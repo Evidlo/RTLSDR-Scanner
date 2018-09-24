@@ -23,14 +23,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import Queue
+from six.moves import queue as Queue
 from collections import OrderedDict
 import os
 import sys
 from threading import Thread
 import threading
 import time
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 
 from rtlsdr_scanner.constants import SAMPLE_RATE
 from rtlsdr_scanner.devices import DeviceRTL, get_devices_rtl
@@ -126,7 +126,7 @@ class Cli(object):
                     error = 'No devices found'
 
         if error is not None:
-            print "Error: {}".format(error)
+            print("Error: {}".format(error))
             exit(1)
 
         self.settings.start = start
@@ -137,19 +137,19 @@ class Cli(object):
         self.settings.devicesRtl[index].gain = gain
         self.settings.devicesRtl[index].lo = lo
 
-        print "{} - {}MHz".format(start, end)
-        print "{} Sweeps".format(sweeps)
-        print "{}dB Gain".format(gain)
-        print "{}s Dwell".format(self.settings.dwell)
-        print "{} FFT points".format(nfft)
-        print "{}MHz LO".format(lo)
+        print("{} - {}MHz".format(start, end))
+        print("{} Sweeps".format(sweeps))
+        print("{}dB Gain".format(gain))
+        print("{}s Dwell".format(self.settings.dwell))
+        print("{} FFT points".format(nfft))
+        print("{}MHz LO".format(lo))
         if remote is not None:
-            print remote
+            print(remote)
         else:
-            print self.settings.devicesRtl[index].name
+            print(self.settings.devicesRtl[index].name)
 
         if len(self.settings.devicesGps):
-            print 'Using GPS configuration \'{}\''.format(self.settings.devicesGps[0].name)
+            print('Using GPS configuration \'{}\''.format(self.settings.devicesGps[0].name))
             self.threadLocation = ThreadLocation(self.queueLocation,
                                                  self.settings.devicesGps[0])
             if not self.__gps_wait():
@@ -169,10 +169,10 @@ class Cli(object):
             export_plot(fullName, exportType, self.spectrum)
 
         self.__gps_stop()
-        print "Done"
+        print("Done")
 
     def __gps_wait(self):
-        print '\nWaiting for GPS fix: {}'.format(self.settings.devicesGps[0].get_desc())
+        print('\nWaiting for GPS fix: {}'.format(self.settings.devicesGps[0].get_desc()))
 
         while True:
             if not self.queueLocation.empty():
@@ -191,7 +191,7 @@ class Cli(object):
         samples = next_2_to_pow(int(samples))
 
         for sweep in range(0, sweeps):
-            print '\nSweep {}:'.format(sweep + 1)
+            print('\nSweep {}:'.format(sweep + 1))
             threadScan = ThreadScan(self.queueNotify, self.queueScan, None,
                                     settings, index, samples, False)
             while threadScan.isAlive() or self.steps > 0:
@@ -200,11 +200,11 @@ class Cli(object):
                 if not self.queueLocation.empty():
                     self.__process_event(self.queueLocation)
             if self.settings.scanDelay > 0 and sweep < sweeps - 1:
-                print '\nDelaying {}s'.format(self.settings.scanDelay)
+                print('\nDelaying {}s'.format(self.settings.scanDelay))
                 time.sleep(self.settings.scanDelay)
             threadScan.rtl_close()
-            print ""
-        print ""
+            print("")
+        print("")
 
     def __process_event(self, queue):
         event = queue.get()
@@ -213,7 +213,7 @@ class Cli(object):
         arg2 = event.data.get_arg2()
 
         if status == Event.STARTING:
-            print "Starting"
+            print("Starting")
         elif status == Event.STEPS:
             self.stepsTotal = (arg1 + 1) * 2
             self.steps = self.stepsTotal
@@ -232,7 +232,7 @@ class Cli(object):
             process.start()
             self.__progress()
         elif status == Event.ERROR:
-            print "Error: {}".format(arg2)
+            print("Error: {}".format(arg2))
             exit(1)
         elif status == Event.PROCESSED:
             offset = self.settings.devicesRtl[self.settings.indexRtl].offset
@@ -253,7 +253,7 @@ class Cli(object):
                                                       arg2[1],
                                                       arg2[2])
         elif status == Event.LOC_ERR:
-            print 'Error: {}'.format(arg2)
+            print('Error: {}'.format(arg2))
             exit(1)
 
         return status
@@ -265,5 +265,5 @@ class Cli(object):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

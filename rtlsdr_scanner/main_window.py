@@ -23,12 +23,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import Queue
+from six.moves import queue as Queue
 from collections import OrderedDict
 import math
 import os.path
 import tempfile
-import thread
+from six.moves import _thread as thread
 from threading import Thread
 import threading
 import time
@@ -38,9 +38,9 @@ import wx
 from wx.lib.agw import aui
 from wx.lib.masked.numctrl import NumCtrl
 
-from location import ThreadLocation, LocationServer
-from menus import MenuMain, PopMenuMain
-from misc import RemoteControl, calc_samples, get_dwells, calc_real_dwell, \
+from rtlsdr_scanner.location import ThreadLocation, LocationServer
+from rtlsdr_scanner.menus import MenuMain, PopMenuMain
+from rtlsdr_scanner.misc import RemoteControl, calc_samples, get_dwells, calc_real_dwell, \
     format_iso_time, limit
 from rtlsdr_scanner.constants import F_MIN, F_MAX, MODE, NFFT, DISPLAY, Warn, \
     Cal, Mode, APP_NAME, LOCATION_PORT
@@ -220,8 +220,8 @@ class FrameMain(wx.Frame):
 
         self.spinCtrlStart = wx.SpinCtrl(self.toolbar1)
         self.spinCtrlStop = wx.SpinCtrl(self.toolbar1)
-        self.spinCtrlStart.SetToolTipString('Start frequency')
-        self.spinCtrlStop.SetToolTipString('Stop frequency')
+        self.spinCtrlStart.SetToolTip('Start frequency')
+        self.spinCtrlStop.SetToolTip('Stop frequency')
         self.spinCtrlStart.SetRange(F_MIN, F_MAX - 1)
         self.spinCtrlStop.SetRange(F_MIN + 1, F_MAX)
         self.Bind(wx.EVT_SPINCTRL, self.__on_spin, self.spinCtrlStart)
@@ -250,21 +250,21 @@ class FrameMain(wx.Frame):
 
         textMode = wx.StaticText(self.toolbar2, label="Mode")
         self.choiceMode = wx.Choice(self.toolbar2, choices=MODE[::2])
-        self.choiceMode.SetToolTipString('Scanning mode')
+        self.choiceMode.SetToolTip('Scanning mode')
 
         textDwell = wx.StaticText(self.toolbar2, label="Dwell")
         self.choiceDwell = wx.Choice(self.toolbar2, choices=get_dwells()[::2])
-        self.choiceDwell.SetToolTipString('Scan time per step')
+        self.choiceDwell.SetToolTip('Scan time per step')
 
         textNfft = wx.StaticText(self.toolbar2, label="FFT size")
-        self.choiceNfft = wx.Choice(self.toolbar2, choices=map(str, NFFT))
-        self.choiceNfft.SetToolTipString('Higher values for greater'
+        self.choiceNfft = wx.Choice(self.toolbar2, choices=list(map(str, NFFT)))
+        self.choiceNfft.SetToolTip('Higher values for greater'
                                          'precision')
 
         textDisplay = wx.StaticText(self.toolbar2, label="Display")
         self.choiceDisplay = wx.Choice(self.toolbar2, choices=DISPLAY[::2])
         self.Bind(wx.EVT_CHOICE, self.__on_choice, self.choiceDisplay)
-        self.choiceDisplay.SetToolTipString('Spectrogram available in'
+        self.choiceDisplay.SetToolTip('Spectrogram available in'
                                             'continuous mode')
 
         grid2 = wx.GridBagSizer(5, 5)
@@ -371,7 +371,7 @@ class FrameMain(wx.Frame):
         self.Bind(wx.EVT_MENU, self.__on_sys_info, self.menuMain.sys)
         self.Bind(wx.EVT_MENU, self.__on_about, self.menuMain.about)
 
-        idF1 = wx.wx.NewId()
+        idF1 = wx.NewId()
         self.Bind(wx.EVT_MENU, self.__on_help, id=idF1)
         accelTable = wx.AcceleratorTable([(wx.ACCEL_NORMAL, wx.WXK_F1, idF1)])
         self.SetAcceleratorTable(accelTable)
@@ -1021,7 +1021,7 @@ class FrameMain(wx.Frame):
             timeStamp = max(self.spectrum)
             spectrum = self.spectrum[timeStamp].copy()
 
-            for x, y in spectrum.iteritems():
+            for x, y in spectrum.items():
                 spectrum[x] = (((x - freq) * (x - freq)) + 1) * y
                 peak = max(spectrum, key=spectrum.get)
 
@@ -1415,5 +1415,5 @@ class FrameMain(wx.Frame):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

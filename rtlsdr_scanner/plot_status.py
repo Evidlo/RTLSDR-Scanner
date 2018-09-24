@@ -157,8 +157,8 @@ class ThreadPlot(threading.Thread):
         cols = len(text[0])
         fontProperties = FontProperties()
         fontProperties.set_weight('semibold')
-        for row in xrange(rows):
-            for col in xrange(cols):
+        for row in range(rows):
+            for col in range(cols):
                 fp = fontProperties if col == 0 else None
                 table.add_cell(row, col,
                                text=text[row][col],
@@ -181,5 +181,5 @@ class ThreadPlot(threading.Thread):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

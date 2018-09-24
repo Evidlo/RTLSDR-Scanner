@@ -130,7 +130,7 @@ class Plotter(object):
             self.lines[Markers.OFS].set_path_effects([effect])
             self.lines[Markers.OFE].set_path_effects([effect])
 
-        for line in self.lines.itervalues():
+        for line in self.lines.values():
             self.axes.add_line(line)
 
         bbox = self.axes.bbox
@@ -170,7 +170,7 @@ class Plotter(object):
                                         ha="center", va="top", bbox=box,
                                         color='#996600')
 
-        for label in self.labels.itervalues():
+        for label in self.labels.values():
             self.axes.add_artist(label)
 
     def __setup_overflow(self):
@@ -194,7 +194,7 @@ class Plotter(object):
                                              transform=self.axes.transAxes,
                                              alpha=0.5)
 
-        for label in self.overflowLabels.itervalues():
+        for label in self.overflowLabels.values():
             self.axes.add_artist(label)
 
     def __clear_overflow(self):
@@ -238,7 +238,7 @@ class Plotter(object):
             self.overflow['right'].append(marker)
 
     def __draw_overflow(self):
-        for pos, overflow in self.overflow.iteritems():
+        for pos, overflow in self.overflow.items():
             if len(overflow) > 0:
                 text = ''
                 for measure in overflow:
@@ -298,11 +298,11 @@ class Plotter(object):
         self.__draw_overflow()
 
     def hide_measure(self):
-        for line in self.lines.itervalues():
+        for line in self.lines.values():
             line.set_visible(False)
-        for label in self.labels.itervalues():
+        for label in self.labels.values():
             label.set_visible(False)
-        for label in self.overflowLabels.itervalues():
+        for label in self.overflowLabels.values():
             label.set_visible(False)
 
     def scale_plot(self, force=False):
@@ -411,6 +411,8 @@ class Plotter(object):
             pass
 
     def close(self):
+        import ipdb
+        ipdb.set_trace()
         self.figure.clear()
         self.figure = None
 
@@ -665,7 +667,7 @@ class ThreadPlot(threading.Thread):
         levels = []
 
         if len(points):
-            prev = points[0]
+            prev = list(points)[0]
             for point in points:
                 segment = [prev, point]
                 segments.append(segment)
@@ -706,5 +708,5 @@ class ThreadPlot(threading.Thread):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

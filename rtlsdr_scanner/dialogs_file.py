@@ -23,8 +23,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import Queue
-import cPickle
+from six.moves import queue as Queue
+from six.moves import cPickle
 import os
 
 from PIL import Image
@@ -377,7 +377,7 @@ class DialogExportSeq(wx.Dialog):
 
         self.textSize = wx.StaticText(self)
         buttonSize = wx.Button(self, label='Change...')
-        buttonSize.SetToolTipString('Change exported image size')
+        buttonSize.SetToolTip('Change exported image size')
         self.Bind(wx.EVT_BUTTON, self.__on_imagesize, buttonSize)
         self.__show_image_size()
 
@@ -610,7 +610,7 @@ class DialogExportGeo(wx.Dialog):
 
         textMesh = wx.StaticText(self, label='Mesh')
         self.checkMesh = wx.CheckBox(self, label='On')
-        self.checkMesh.SetToolTipString('Signal level mesh')
+        self.checkMesh.SetToolTip('Signal level mesh')
         self.checkMesh.SetValue(self.plotMesh)
         self.Bind(wx.EVT_CHECKBOX, self.__on_mesh, self.checkMesh)
         self.choiceMapMesh = wx.Choice(self, choices=colours)
@@ -628,7 +628,7 @@ class DialogExportGeo(wx.Dialog):
         colours = get_colours()
         textHeat = wx.StaticText(self, label='Heat map')
         self.checkHeat = wx.CheckBox(self, label='On')
-        self.checkHeat.SetToolTipString('GPS location heatmap')
+        self.checkHeat.SetToolTip('GPS location heatmap')
         self.checkHeat.SetValue(self.plotHeat)
         self.Bind(wx.EVT_CHECKBOX, self.__on_heat, self.checkHeat)
         self.choiceMapHeat = wx.Choice(self, choices=colours)
@@ -646,7 +646,7 @@ class DialogExportGeo(wx.Dialog):
         textRange = wx.StaticText(self, label='Range')
         textCentre = wx.StaticText(self, label='Centre')
         self.spinCentre = wx.SpinCtrl(self)
-        self.spinCentre.SetToolTipString('Centre frequency (kHz)')
+        self.spinCentre.SetToolTip('Centre frequency (kHz)')
         self.spinCentre.SetRange(freqMin, freqMax)
         self.spinCentre.SetValue(freqMin + bw / 2)
         sizerCentre = wx.BoxSizer(wx.HORIZONTAL)
@@ -654,7 +654,7 @@ class DialogExportGeo(wx.Dialog):
         sizerCentre.Add(self.spinCentre, flag=wx.ALL, border=5)
         textBw = wx.StaticText(self, label='Bandwidth')
         self.spinBw = wx.SpinCtrl(self)
-        self.spinBw.SetToolTipString('Bandwidth (kHz)')
+        self.spinBw.SetToolTip('Bandwidth (kHz)')
         self.spinBw.SetRange(1, bw)
         self.spinBw.SetValue(bw / 10)
         sizerBw = wx.BoxSizer(wx.HORIZONTAL)
@@ -671,7 +671,7 @@ class DialogExportGeo(wx.Dialog):
         textOutput = wx.StaticText(self, label='Output')
         self.textRes = wx.StaticText(self)
         buttonRes = wx.Button(self, label='Change...')
-        buttonRes.SetToolTipString('Change output resolution')
+        buttonRes.SetToolTip('Change output resolution')
         self.Bind(wx.EVT_BUTTON, self.__on_imageres, buttonRes)
         sizerRes = wx.BoxSizer(wx.HORIZONTAL)
         sizerRes.Add(self.textRes, flag=wx.ALL, border=5)
@@ -762,7 +762,7 @@ class DialogExportGeo(wx.Dialog):
         y = []
         z = []
 
-        for coord, peak in coords.iteritems():
+        for coord, peak in coords.items():
             x.append(coord[1])
             y.append(coord[0])
             z.append(peak)
@@ -1071,5 +1071,5 @@ class DialogRestore(wx.Dialog):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

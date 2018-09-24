@@ -23,7 +23,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import cPickle
+from six.moves import cPickle
 from collections import OrderedDict
 import datetime
 import glob
@@ -129,7 +129,7 @@ class File(object):
 
         filters = ''
         length = len(types)
-        for i in xrange(length):
+        for i in range(length):
             filters += types[i]
             if i < length - 1:
                 filters += '|'
@@ -142,7 +142,7 @@ class File(object):
 
         pretty = ''
         length = len(types)
-        for i in xrange(length):
+        for i in range(length):
             pretty += File.get_type_ext(i, type)
             if i < length - 2:
                 pretty += ', '
@@ -154,7 +154,7 @@ class File(object):
     @staticmethod
     def get_type_index(extension, type=Types.PLOT):
         exports = File.__get_types(type)
-        for i in xrange(len(exports)):
+        for i in range(len(exports)):
             if extension == File.get_type_ext(i, type):
                 return i
 
@@ -230,7 +230,7 @@ class Backups(object):
                     os.remove(backup)
                 except:
                     pass
-        files.sort(lambda x, y: cmp(x[1], y[1]), reverse=True)
+        files.sort(key=lambda x: x[1], reverse=True)
 
         return files
 
@@ -340,18 +340,18 @@ def open_plot(dirname, filename):
                 lon = data[1]['Longitude']
             if version < 7:
                 spectrum[1] = {}
-                for f, p in data[1]['Spectrum'].iteritems():
+                for f, p in data[1]['Spectrum'].items():
                     spectrum[1][float(f)] = p
             else:
-                for t, s in data[1]['Spectrum'].iteritems():
+                for t, s in data[1]['Spectrum'].items():
                     spectrum[float(t)] = {}
-                    for f, p in s.iteritems():
+                    for f, p in s.items():
                         spectrum[float(t)][float(f)] = p
             if version > 7:
                 desc = data[1]['Description']
             if version > 8:
                 location = {}
-                for t, l in data[1]['Location'].iteritems():
+                for t, l in data[1]['Location'].items():
                     location[float(t)] = l
 
         except ValueError:
@@ -469,8 +469,8 @@ def export_csv(handle, spectrum, header=True):
     if header:
         handle.write(u"Time (UTC), Frequency (MHz),Level (dB/Hz)\n")
     if spectrum is not None:
-        for plot in spectrum.iteritems():
-            for freq, pwr in plot[1].iteritems():
+        for plot in spectrum.items():
+            for freq, pwr in plot[1].items():
                 handle.write("{}, {}, {}\n".format(plot[0], freq, pwr))
 
 
@@ -486,9 +486,9 @@ def export_plt(handle, spectrum):
     handle.write('set hidden3d\n')
     handle.write('set palette rgb 33,13,10\n')
     handle.write('splot "-" using 1:2:3 notitle with lines \n')
-    for plot in spectrum.iteritems():
+    for plot in spectrum.items():
         handle.write('\n')
-        for freq, pwr in plot[1].iteritems():
+        for freq, pwr in plot[1].items():
             handle.write("{} {} {}\n".format(freq, plot[0], pwr))
 
 
@@ -660,5 +660,5 @@ def extension_add(fileName, index, fileType):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)

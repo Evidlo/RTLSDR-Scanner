@@ -23,7 +23,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+from six.moves.BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 import json
 import mimetypes
 import os
@@ -32,7 +32,7 @@ import socket
 import threading
 import time
 import urllib
-from urlparse import urlparse
+from six.moves.urllib.parse import urlparse
 
 import serial
 from serial.serialutil import SerialException
@@ -414,8 +414,8 @@ class LocationServerHandler(BaseHTTPRequestHandler):
         begin = format_iso_time(min(self.server.locations))
         end = format_iso_time(max(self.server.locations))
 
-        lat = [y for y, _x, _z in self.server.locations.itervalues()]
-        lon = [x for _y, x, _z in self.server.locations.itervalues()]
+        lat = [y for y, _x, _z in self.server.locations.values()]
+        lon = [x for _y, x, _z in self.server.locations.values()]
         latMin = min(lat)
         latMax = max(lat)
         lonMin = min(lon)
@@ -626,5 +626,5 @@ class Timeout(threading.Thread):
 
 
 if __name__ == '__main__':
-    print 'Please run rtlsdr_scan.py'
+    print('Please run rtlsdr_scan.py')
     exit(1)
